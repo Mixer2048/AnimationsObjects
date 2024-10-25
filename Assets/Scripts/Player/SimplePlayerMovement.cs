@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class SimplePlayerMovement : MonoBehaviour
 {
     [Range(1f, 100f)]
     public float zSpeed = 5;
@@ -15,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
     Vector3 xV;
     Vector3 zV;
     Vector3 V;
+
+    public PlayerAnimationController _animController;
 
     void Start()
     {
@@ -32,6 +32,8 @@ public class PlayerMovement : MonoBehaviour
         xV = new Vector3(x, 0, 0);
 
         V = (zV + xV).normalized;
+
+        _animController.SetAnimatorParameters(xV.x, zV.z);
 
         V.x *= xSpeed;
         V.z *= zSpeed;
