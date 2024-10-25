@@ -2,15 +2,16 @@ using UnityEngine;
 
 public class AdvancedPlayerMovement : MonoBehaviour
 {
-    public float MaxSpeed { get { return _maxSpeed; } }
+    public float MaxSpeed { get { return _maxForwardSpeed; } }
 
-    [SerializeField, Range(1f, 20f)] private float _maxRunSpeed = 5f;
-    [SerializeField, Range(1f, 20f)] private float _maxSprintSpeed = 10f;
-    [SerializeField, Range(1f, 20f)] private float _maxSideStepSpeed = 5f;
+    [SerializeField, Range(1f, 20f)] private float _runSpeed = 5f;
+    [SerializeField, Range(1f, 20f)] private float _sprintSpeed = 10f;
+    [SerializeField, Range(1f, 20f)] private float _sideStepSpeed = 5f;
     [SerializeField, Range(1f, 20f)] private float _acceleration = 3f;
     [SerializeField, Range(1f, 20f)] private float _deceleration = 5f;
 
-    private float _maxSpeed;
+    private float _maxForwardSpeed;
+    private float _maxSideSpeed;
     private float _speedZ = 0;
     private float _speedX = 0;
 
@@ -22,31 +23,35 @@ public class AdvancedPlayerMovement : MonoBehaviour
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
+
+        _maxForwardSpeed = _runSpeed;
+        _maxSideSpeed = _sideStepSpeed;
     }
 
     private void Update()
     {
         float xInput = Input.GetAxisRaw("Horizontal");
         float zInput = Input.GetAxisRaw("Vertical");
-        bool sprintInput = Input.GetKey(KeyCode.LeftShift);
+
+        if (Input.GetKey(KeyCode.LeftShift))
+            _maxForwardSpeed = _sprintSpeed;
+        else
+            _maxForwardSpeed = _runSpeed;
+
+        GetAnimationState();
 
         if (xInput != 0f)
-            _speedX = Mathf.Lerp(_speedX, xInput * _maxSideStepSpeed, _acceleration * Time.deltaTime);
+            _speedX = Mathf.Lerp(_speedX, xInput * _maxSideSpeed, _acceleration * Time.deltaTime);
         else if (_speedX != 0)
-            _speedX = Mathf.Lerp(_speedX, xInput * _maxSideStepSpeed, _deceleration * Time.deltaTime);
-
-        if (sprintInput)
-            _maxSpeed = _maxSprintSpeed;
-        else
-            _maxSpeed = _maxRunSpeed;
+            _speedX = Mathf.Lerp(_speedX, xInput * _maxSideSpeed, _deceleration * Time.deltaTime);
 
         if (zInput != 0f)
-            _speedZ = Mathf.Lerp(_speedZ, zInput * _maxSpeed, _acceleration * Time.deltaTime);
+            _speedZ = Mathf.Lerp(_speedZ, zInput * _maxForwardSpeed, _acceleration * Time.deltaTime);
         else if (_speedZ != 0)
-            _speedZ = Mathf.Lerp(_speedZ, zInput * _maxSpeed, _deceleration * Time.deltaTime);
+            _speedZ = Mathf.Lerp(_speedZ, zInput * _maxForwardSpeed, _deceleration * Time.deltaTime);
 
-        _animController.SetAnimatorParameters(_speedX / _maxSideStepSpeed, _speedZ / _maxRunSpeed);
-
+        _animController.SetAnimatorParameters(_speedX / _sideStepSpeed, _speedZ / _runSpeed);
+        
         _velocity = new Vector3(xInput, 0, zInput).normalized;
         _velocity.x *= _speedX < 0 ? -_speedX : _speedX;
         _velocity.z *= _speedZ < 0 ? -_speedZ : _speedZ;
@@ -55,7 +60,40 @@ public class AdvancedPlayerMovement : MonoBehaviour
 
         _velocity.y = _rb.velocity.y;
         _rb.velocity = _velocity;
+    }
 
-        //Debug.Log(_rb.velocity.z);
+    private void GetAnimationState()
+    {
+        PlayerState state = _animController.GetCurrentState();
+        Debug.Log(state);
+
+        switch (state)
+        {
+            case PlayerState.Falling:
+                _maxForwardSpeed = _runSpeed / 2;
+                _maxSideSpeed = _sideStepSpeed / 2;
+                break;
+            case PlayerState.Landing:
+                _maxForwardSpeed = 0;
+                _maxSideSpeed = 0;
+                _speedX = 0;
+                _speedZ = 0;
+                break;
+            default:
+                _maxSideSpeed = _sideStepSpeed;
+                return;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Ground"))
+            _animController.SetGroundState(true);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Ground"))
+            _animController.SetGroundState(false);
     }
 }

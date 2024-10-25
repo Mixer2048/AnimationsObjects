@@ -138,7 +138,7 @@ GameObject:
   - component: {fileID: 159978421}
   m_Layer: 0
   m_Name: Platform1
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -821,7 +821,7 @@ GameObject:
   - component: {fileID: 250535698}
   m_Layer: 0
   m_Name: Platform4
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1504,7 +1504,7 @@ GameObject:
   - component: {fileID: 378270600}
   m_Layer: 0
   m_Name: Platform2
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1857,7 +1857,7 @@ GameObject:
   - component: {fileID: 383719192}
   m_Layer: 0
   m_Name: Cage
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2447,11 +2447,11 @@ GameObject:
   - component: {fileID: 602090579}
   - component: {fileID: 602090578}
   - component: {fileID: 602090577}
-  - component: {fileID: 602090581}
-  - component: {fileID: 602090580}
-  - component: {fileID: 602090582}
   - component: {fileID: 602090583}
+  - component: {fileID: 602090580}
   - component: {fileID: 602090584}
+  - component: {fileID: 602090585}
+  - component: {fileID: 602090586}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2539,35 +2539,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sensitivity: 1
---- !u!114 &602090581
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 602090576}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50f87fbb77a2f3c488b75f9dae80a79e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  zSpeed: 5
-  xSpeed: 3
-  _animController: {fileID: 602090582}
---- !u!114 &602090582
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 602090576}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fc72702f74641948a89bf9dccd1c7b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _player: {fileID: 1083971681}
-  _animator: {fileID: 1083971683}
 --- !u!114 &602090583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2580,12 +2551,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42846373af6098c4abaec507e1d11ab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxRunSpeed: 5
-  _maxSprintSpeed: 9
-  _maxSideStepSpeed: 3
+  _runSpeed: 5
+  _sprintSpeed: 10
+  _sideStepSpeed: 5
   _acceleration: 5
   _deceleration: 5
-  _animController: {fileID: 602090582}
+  _animController: {fileID: 1083971685}
 --- !u!114 &602090584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2599,6 +2570,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorLock: 1
+--- !u!65 &602090585
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 602090576}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5, y: 0.5, z: 0.5}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &602090586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 602090576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a136d22a55bb674586699900c4259cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _jumpForce: 6
+  _animController: {fileID: 1083971685}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -2997,6 +3003,36 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 262dc9f7ced85884983c7fcc808fdc29, type: 3}
   m_PrefabInstance: {fileID: 1724813003}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1083971685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1083971681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fc72702f74641948a89bf9dccd1c7b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnJumped:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 602090586}
+        m_TargetAssemblyTypeName: PlayerJump, Assembly-CSharp
+        m_MethodName: Jump
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnLanded:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1246701893
 GameObject:
   m_ObjectHideFlags: 0
@@ -3013,7 +3049,7 @@ GameObject:
   - component: {fileID: 1246701894}
   m_Layer: 0
   m_Name: Tramplin
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3758,6 +3794,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 262dc9f7ced85884983c7fcc808fdc29, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1083971683}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 262dc9f7ced85884983c7fcc808fdc29, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1083971685}
   m_SourcePrefab: {fileID: 100100000, guid: 262dc9f7ced85884983c7fcc808fdc29, type: 3}
 --- !u!1 &1781125257
 GameObject:
@@ -3812,7 +3851,7 @@ GameObject:
   - component: {fileID: 1988980019}
   m_Layer: 0
   m_Name: Platform3
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
