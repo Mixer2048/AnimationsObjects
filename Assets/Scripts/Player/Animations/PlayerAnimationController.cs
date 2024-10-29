@@ -4,7 +4,6 @@ using UnityEngine.Events;
 public class PlayerAnimationController : MonoBehaviour
 {
     public UnityEvent OnJumped;
-    public UnityEvent OnLanded;
 
     private Animator _animator;
 
@@ -36,11 +35,6 @@ public class PlayerAnimationController : MonoBehaviour
     public void JumpStart()
     {
         OnJumped?.Invoke();
-    }
-
-    public void JumpEnd()
-    {
-        OnLanded?.Invoke();
     }
 
     public PlayerState GetCurrentState()
