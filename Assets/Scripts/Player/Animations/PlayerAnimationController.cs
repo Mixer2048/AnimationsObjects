@@ -10,10 +10,15 @@ public class PlayerAnimationController : MonoBehaviour
 
     private bool _isGrounded;
 
+    int injuredLayerIndex;
+
     public void SetAnimatorParameters(float x, float z)
     {
-        _animator.SetFloat("Speed_X", x);
-        _animator.SetFloat("Speed_Z", z);
+        if (_isGrounded == true)
+        {
+            _animator.SetFloat("Speed_X", x);
+            _animator.SetFloat("Speed_Z", z);
+        }
     }
 
     public void SetGroundState(bool state) 
@@ -49,5 +54,15 @@ public class PlayerAnimationController : MonoBehaviour
         return PlayerState.Moving;
     }
 
-    private void Start() => _animator = GetComponent<Animator>();
+    public void damageTaken(float hpRatio)
+    {
+        _animator.SetTrigger("onHit");
+        _animator.SetLayerWeight(injuredLayerIndex, 1 - hpRatio);
+    }
+
+    private void Start()
+    {
+        _animator = GetComponent<Animator>();
+        injuredLayerIndex = _animator.GetLayerIndex("injured");
+    }   
 }
