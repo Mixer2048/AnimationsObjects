@@ -54,6 +54,11 @@ public class PlayerAnimationController : MonoBehaviour
         _animator.SetLayerWeight(injuredLayerIndex, 1 - hpRatio);
     }
 
+    public void Block(bool state)
+    {
+        _animator.SetBool("Blocking", state);
+    }
+
     private void Start()
     {
         _animator = GetComponent<Animator>();
